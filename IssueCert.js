@@ -8,6 +8,7 @@ import {
   Text,
   Linking,
 } from 'react-native';
+import MaskInput from 'react-native-mask-input';
 
 import config from './config/config';
 import Util from './util';
@@ -17,8 +18,7 @@ const IssueCert: () => Node = () => {
   const routes = {
     createOrder: 'api/orders/pki-brazil',
     getOrderLink: 'api/orders/',
-    issueLink: '/issue-link'
-  };
+    issueLink: '/issue-link'};
 
   const sendCreateOrderRequest = async () => {
     const postPayload = {
@@ -72,6 +72,9 @@ const IssueCert: () => Node = () => {
     console.log(result);
   };
 
+  const phoneNumberMask = ['+', /\d/, /\d/, /\d/, '(', /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
+  const identifierMask = [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/];
+
   return (
     <SafeAreaView>
       <TextInput
@@ -80,17 +83,23 @@ const IssueCert: () => Node = () => {
         style={styles.input}
         placeholder="Digite o nome"
       />
-      <TextInput
-        onChangeText={text => setIdentifier(text)}
+      <MaskInput
+        onChangeText={(masked, unmasked) => {
+          setIdentifier(masked);
+        }}
         value={identifier}
         style={styles.input}
         placeholder="Digite o CPF"
+        mask={identifierMask}
       />
-      <TextInput
-        onChangeText={text => setPhoneNumber(text)}
-        value={phoneNumber}
-        style={styles.input}
-        placeholder="Digite o número de telefone"
+      <MaskInput
+      value={phoneNumber}
+      onChangeText={(masked, unmasked) => {
+        setPhoneNumber(masked);
+      }}
+      mask={phoneNumberMask}
+      style={styles.input}
+      placeholder="Digite o número de telefone"
       />
       <TouchableHighlight onPress={handleSubmit} style={styles.button}>
         <Text style={styles.buttonText}>Enviar</Text>
