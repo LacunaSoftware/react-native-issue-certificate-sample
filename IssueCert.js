@@ -72,7 +72,7 @@ const IssueCert: () => Node = () => {
     console.log(result);
   };
 
-  const phoneNumberMask = ['+', /\d/, /\d/, /\d/, '(', /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
+  const phoneNumberMask = ['+', /\d/, /\d/, '(', /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
   const identifierMask = [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/];
 
   return (
@@ -121,6 +121,7 @@ const styles = StyleSheet.create({
     padding: 2,
     margin: 10,
     textDecorationColor: 'black',
+    color: 'gray',
   },
   button: {
     backgroundColor: 'green',
