@@ -12,13 +12,21 @@ import {
   StatusBar,
   StyleSheet,
   View,
+  Text,
 } from 'react-native';
 import IssueCert from './IssueCert';
 
 const App: () => Node = () => {
+  const titleTextMessage = 'Bem vindo ao exemplo de emissão de certificados da Lacuna';
 
   return (
+
     <View style={styles.container}>
+      <View>
+        <Text style={styles.titleText}>
+          {titleTextMessage}
+        </Text>
+      </View>
      <IssueCert/>
      <StatusBar style="auto"/>
     </View>
@@ -31,7 +39,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-  }
+  },
+  titleText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'black',
+    alignContent: 'center',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
 });
 
 export default App;

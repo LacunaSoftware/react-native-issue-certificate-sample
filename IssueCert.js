@@ -65,9 +65,9 @@ const IssueCert: () => Node = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
 
   const handleSubmit = () => {
-    console.log(subjectName);
-    console.log(identifier);
-    console.log(phoneNumber);
+    // console.log(subjectName);
+    // console.log(identifier);
+    // console.log(phoneNumber);
     const result = sendCreateOrderRequest();
     console.log(result);
   };
@@ -82,7 +82,8 @@ const IssueCert: () => Node = () => {
         value={subjectName}
         style={styles.input}
         placeholder="Digite o nome"
-      />
+        placeholderTextColor='#000'
+        />
       <MaskInput
         onChangeText={(masked, unmasked) => {
           setIdentifier(masked);
@@ -90,8 +91,9 @@ const IssueCert: () => Node = () => {
         value={identifier}
         style={styles.input}
         placeholder="Digite o CPF"
+        placeholderTextColor='#000'
         mask={identifierMask}
-      />
+        />
       <MaskInput
       value={phoneNumber}
       onChangeText={(masked, unmasked) => {
@@ -99,6 +101,7 @@ const IssueCert: () => Node = () => {
       }}
       mask={phoneNumberMask}
       style={styles.input}
+      placeholderTextColor='#000'
       placeholder="Digite o número de telefone"
       />
       <TouchableHighlight onPress={handleSubmit} style={styles.button}>
@@ -117,9 +120,10 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     padding: 2,
     margin: 10,
+    textDecorationColor: 'black',
   },
   button: {
-    backgroundColor: 'lightgreen',
+    backgroundColor: 'green',
     borderRadius: 15,
     marginTop: 25,
     padding: 10,
