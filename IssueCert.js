@@ -6,6 +6,7 @@ import {
   TouchableHighlight,
   StyleSheet,
   Text,
+  Linking,
 } from 'react-native';
 
 import config from './config/config';
@@ -16,7 +17,7 @@ const IssueCert: () => Node = () => {
   const routes = {
     createOrder: 'api/orders/pki-brazil',
     getOrderLink: 'api/orders/',
-    issueLink: '/issueLink'
+    issueLink: '/issue-link'
   };
 
   const sendCreateOrderRequest = async () => {
@@ -45,7 +46,9 @@ const IssueCert: () => Node = () => {
   };
 
   const getOrderIssueLink = async (orderId) => {
-    const res = await fetch(`${config.endpoint}${config.getOrderLink}${orderId}${config.issueLink}`, {
+    const reqString = `${config.endpoint}${routes.getOrderLink}${orderId}${routes.issueLink}`;
+    console.log(reqString);
+    const res = await fetch(reqString, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -54,6 +57,7 @@ const IssueCert: () => Node = () => {
     });
     const result = await res.json();
     console.log(result);
+    Linking.openURL(result);
   };
 
   const [subjectName, setSubjectName] = useState('');
