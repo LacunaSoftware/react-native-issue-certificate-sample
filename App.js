@@ -17,18 +17,9 @@ import {
 import IssueCert from './IssueCert';
 
 const App: () => Node = () => {
-  const titleTextMessage = 'Bem vindo ao exemplo de emissão de certificados da Lacuna';
-
   return (
-
     <View style={styles.container}>
-      <View>
-        <Text style={styles.titleText}>
-          {titleTextMessage}
-        </Text>
-      </View>
      <IssueCert/>
-     <StatusBar style="auto"/>
     </View>
   );
 };

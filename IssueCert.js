@@ -2,111 +2,88 @@ import {React, useState} from 'react';
 import type {Node} from 'react';
 import {
   SafeAreaView,
-  TextInput,
   TouchableHighlight,
   StyleSheet,
   Text,
   Linking,
+  View
 } from 'react-native';
-import MaskInput from 'react-native-mask-input';
-
-import config from './config/config';
-import Util from './util';
 
 const IssueCert: () => Node = () => {
-
   const routes = {
-    createOrder: 'api/orders/pki-brazil',
-    getOrderLink: 'api/orders/',
-    issueLink: '/issue-link'};
-
-  const sendCreateOrderRequest = async () => {
-    const postPayload = {
-      parameters: {
-        name: subjectName,
-        cpf: identifier,
-        phoneNumber: phoneNumber,
-      },
-      caId: config.caId,
-      validityEnd: Util.getTwoYearsFromNowDate(),
-      kind: 'PublicKey'
-    };
-    console.log(JSON.stringify(postPayload));
-    const res = await fetch(`${config.endpoint}${routes.createOrder}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': config.apiKey,
-      },
-      body: JSON.stringify(postPayload),
-    });
-    const result = await res.json();
-    console.log(result.id);
-    getOrderIssueLink(result.id);
+    signerElectronic:
+      'https://demos.lacunasoftware.com/api/signer/embedded?allowElectronic=true',
   };
 
-  const getOrderIssueLink = async (orderId) => {
-    const reqString = `${config.endpoint}${routes.getOrderLink}${orderId}${routes.issueLink}`;
-    console.log(reqString);
-    const res = await fetch(reqString, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'x-api-key': config.apiKey,
-        },
-    });
-    const result = await res.json();
-    console.log(result);
-    Linking.openURL(result);
-  };
+  // const itemOptions = [
+  //   {value: '', label: 'Default theme'},
+  //   {value: 'apb', label: 'Amaranth Pacific Blue'},
+  //   {value: 'acr', label: 'Amazon Cornell Red'},
+  //   {value: 'azg', label: 'Azure Lime Green'},
+  //   {value: 'cgo', label: 'Castleton Green Orange'},
+  //   {value: 'clg', label: 'Cerulean Lime Green'},
+  //   {value: 'cam', label: 'Charcoal Amazonite'},
+  //   {value: 'clc', label: 'Cobalt Lemon Curry'},
+  //   {value: 'dcg', label: 'Dark Cerulean Green'},
+  //   {value: 'dgy', label: 'Dark Grey Yellow'},
+  //   {value: 'dir', label: 'Dark Indigo Red'},
+  //   {value: 'eva', label: 'English Vermillion Arsenic'},
+  //   {value: 'gdc', label: 'Green Dark Coral'},
+  //   {value: 'idg', label: 'Independence Green'},
+  //   {value: 'mse', label: 'Metallic Seaweed Emerald'},
+  //   {value: 'osg', label: 'Onyx Satin Gold'},
+  //   {value: 'obg', label: 'Oxford Blue Green'},
+  //   {value: 'pps', label: 'Persian Plum Sand'},
+  //   {value: 'qbm', label: 'Queen Blue Mint'},
+  //   {value: 'tbg', label: 'Teal Blue Gold'},
+  //   {value: 'vgy', label: 'Viridian Green Yellow'},
+  //   {value: 'iog', label: 'International Orange Green'},
+  //   {value: 'oco', label: 'Onyx Carrot Orange'},
+  //   {value: 'ioa', label: 'International Orange Apricot'},
+  //   {value: 'gvb', label: 'Generic Viridian Blue'},
+  //   {value: 'scy', label: 'Space Cadet Yellow'},
+  //   {value: 'bvr', label: 'Blue Venetian Red'},
+  //   {value: 'vsb', label: 'Vivid Sky Blue'},
+  //   {value: 'ctv', label: 'Chartreuse Traditional Violet'},
+  // ];
 
-  const [subjectName, setSubjectName] = useState('');
-  const [identifier, setIdentifier] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
+  var [disableButton, setDisableButton] = useState(false);
 
   const handleSubmit = () => {
-    // console.log(subjectName);
-    // console.log(identifier);
-    // console.log(phoneNumber);
-    const result = sendCreateOrderRequest();
-    console.log(result);
+    // console.log('Disabled? ' + disabledCheckbox);
+    // console.log('Theme: ' + dropdownValue);
+    setDisableButton(true);
+    sign();
   };
 
-  const phoneNumberMask = ['+', /\d/, /\d/, '(', /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
-  const identifierMask = [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/];
+  const sign = async () => {
+    return fetch(routes.signerElectronic, {
+      method: 'POST',
+      headers: {
+        Accept: '*/*',
+      },
+    }).then(res => res.text()).then((response) => {
+      // setRenderWebView(true);
+      Linking.openURL(response);
+    });
+  };
+
+  const titleTextMessage = 'Welcome to the embedded signatures mobile sample!';
 
   return (
     <SafeAreaView>
-      <TextInput
-        onChangeText={text => setSubjectName(text)}
-        value={subjectName}
-        style={styles.input}
-        placeholder="Digite o nome"
-        placeholderTextColor='#000'
-        />
-      <MaskInput
-        onChangeText={(masked, unmasked) => {
-          setIdentifier(masked);
-        }}
-        value={identifier}
-        style={styles.input}
-        placeholder="Digite o CPF"
-        placeholderTextColor='#000'
-        mask={identifierMask}
-        />
-      <MaskInput
-      value={phoneNumber}
-      onChangeText={(masked, unmasked) => {
-        setPhoneNumber(masked);
-      }}
-      mask={phoneNumberMask}
-      style={styles.input}
-      placeholderTextColor='#000'
-      placeholder="Digite o número de telefone"
-      />
-      <TouchableHighlight onPress={handleSubmit} style={styles.button}>
-        <Text style={styles.buttonText}>Enviar</Text>
-      </TouchableHighlight>
+      <>
+        <View>
+        <Text style={styles.titleText}>
+          {titleTextMessage}
+        </Text>
+        </View>
+          <TouchableHighlight onPress={handleSubmit} style={styles.button}>
+            <Text style={styles.buttonText} disabled={disableButton}>
+              Go to webpage to sign a document
+            </Text>
+          </TouchableHighlight>
+        </>
     </SafeAreaView>
   );
 };
@@ -132,6 +109,18 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'white',
+  },
+  checkbox: {
+    margin: 25,
+    padding: 25,
+  },
+  titleText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'black',
+    alignContent: 'center',
+    textAlign: 'center',
+    marginBottom: 20,
   },
 });
 export default IssueCert;
