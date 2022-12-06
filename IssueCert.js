@@ -8,10 +8,6 @@ import {
   Linking,
   View
 } from 'react-native';
-import DropDownPicker from 'react-native-dropdown-picker';
-import BouncyCheckbox from 'react-native-bouncy-checkbox';
-import {WebView} from 'react-native-webview';
-import WebViewComponent from './webViewComponent';
 
 const IssueCert: () => Node = () => {
   const routes = {
@@ -19,44 +15,38 @@ const IssueCert: () => Node = () => {
       'https://demos.lacunasoftware.com/api/signer/embedded?allowElectronic=true',
   };
 
-  const itemOptions = [
-    {value: '', label: 'Default theme'},
-    {value: 'apb', label: 'Amaranth Pacific Blue'},
-    {value: 'acr', label: 'Amazon Cornell Red'},
-    {value: 'azg', label: 'Azure Lime Green'},
-    {value: 'cgo', label: 'Castleton Green Orange'},
-    {value: 'clg', label: 'Cerulean Lime Green'},
-    {value: 'cam', label: 'Charcoal Amazonite'},
-    {value: 'clc', label: 'Cobalt Lemon Curry'},
-    {value: 'dcg', label: 'Dark Cerulean Green'},
-    {value: 'dgy', label: 'Dark Grey Yellow'},
-    {value: 'dir', label: 'Dark Indigo Red'},
-    {value: 'eva', label: 'English Vermillion Arsenic'},
-    {value: 'gdc', label: 'Green Dark Coral'},
-    {value: 'idg', label: 'Independence Green'},
-    {value: 'mse', label: 'Metallic Seaweed Emerald'},
-    {value: 'osg', label: 'Onyx Satin Gold'},
-    {value: 'obg', label: 'Oxford Blue Green'},
-    {value: 'pps', label: 'Persian Plum Sand'},
-    {value: 'qbm', label: 'Queen Blue Mint'},
-    {value: 'tbg', label: 'Teal Blue Gold'},
-    {value: 'vgy', label: 'Viridian Green Yellow'},
-    {value: 'iog', label: 'International Orange Green'},
-    {value: 'oco', label: 'Onyx Carrot Orange'},
-    {value: 'ioa', label: 'International Orange Apricot'},
-    {value: 'gvb', label: 'Generic Viridian Blue'},
-    {value: 'scy', label: 'Space Cadet Yellow'},
-    {value: 'bvr', label: 'Blue Venetian Red'},
-    {value: 'vsb', label: 'Vivid Sky Blue'},
-    {value: 'ctv', label: 'Chartreuse Traditional Violet'},
-  ];
+  // const itemOptions = [
+  //   {value: '', label: 'Default theme'},
+  //   {value: 'apb', label: 'Amaranth Pacific Blue'},
+  //   {value: 'acr', label: 'Amazon Cornell Red'},
+  //   {value: 'azg', label: 'Azure Lime Green'},
+  //   {value: 'cgo', label: 'Castleton Green Orange'},
+  //   {value: 'clg', label: 'Cerulean Lime Green'},
+  //   {value: 'cam', label: 'Charcoal Amazonite'},
+  //   {value: 'clc', label: 'Cobalt Lemon Curry'},
+  //   {value: 'dcg', label: 'Dark Cerulean Green'},
+  //   {value: 'dgy', label: 'Dark Grey Yellow'},
+  //   {value: 'dir', label: 'Dark Indigo Red'},
+  //   {value: 'eva', label: 'English Vermillion Arsenic'},
+  //   {value: 'gdc', label: 'Green Dark Coral'},
+  //   {value: 'idg', label: 'Independence Green'},
+  //   {value: 'mse', label: 'Metallic Seaweed Emerald'},
+  //   {value: 'osg', label: 'Onyx Satin Gold'},
+  //   {value: 'obg', label: 'Oxford Blue Green'},
+  //   {value: 'pps', label: 'Persian Plum Sand'},
+  //   {value: 'qbm', label: 'Queen Blue Mint'},
+  //   {value: 'tbg', label: 'Teal Blue Gold'},
+  //   {value: 'vgy', label: 'Viridian Green Yellow'},
+  //   {value: 'iog', label: 'International Orange Green'},
+  //   {value: 'oco', label: 'Onyx Carrot Orange'},
+  //   {value: 'ioa', label: 'International Orange Apricot'},
+  //   {value: 'gvb', label: 'Generic Viridian Blue'},
+  //   {value: 'scy', label: 'Space Cadet Yellow'},
+  //   {value: 'bvr', label: 'Blue Venetian Red'},
+  //   {value: 'vsb', label: 'Vivid Sky Blue'},
+  //   {value: 'ctv', label: 'Chartreuse Traditional Violet'},
+  // ];
 
-  const [items, setItems] = useState(itemOptions);
-  const [dropdownValue, setDropdownValue] = useState('');
-  const [open, setOpen] = useState(false);
-  const [disabledCheckbox, setDisabledCheckbox] = useState(false);
-  const [renderWebView, setRenderWebView] = useState(false);
-  var [embedUrl, setEmbedUrl] = useState('');
   var [disableButton, setDisableButton] = useState(false);
 
   const handleSubmit = () => {
@@ -66,8 +56,6 @@ const IssueCert: () => Node = () => {
     sign();
   };
 
-  // window.flutter_inappwebview.callHandler('unrenderView');
-
   const sign = async () => {
     return fetch(routes.signerElectronic, {
       method: 'POST',
@@ -75,56 +63,27 @@ const IssueCert: () => Node = () => {
         Accept: '*/*',
       },
     }).then(res => res.text()).then((response) => {
-      setEmbedUrl(response);
-      setRenderWebView(true);
+      // setRenderWebView(true);
       Linking.openURL(response);
     });
   };
 
-  const disablePreviewCheckboxText = 'Disable document preview';
-  const disablePreviewCheckboxTextStyle = {textDecorationLine: 'none'};
-  const titleTextMessage = 'Welcome to the embedded signatures mobile sample';
+  const titleTextMessage = 'Welcome to the embedded signatures mobile sample!';
 
   return (
     <SafeAreaView>
-      {!renderWebView ? (
-        <>
+      <>
         <View>
         <Text style={styles.titleText}>
           {titleTextMessage}
         </Text>
         </View>
-          {/* <DropDownPicker
-            open={open}
-            setOpen={setOpen}
-            items={items}
-            value={dropdownValue}
-            setValue={setDropdownValue}
-            setItems={setItems}
-          /> */}
-          {/* <BouncyCheckbox
-            style
-            text={disablePreviewCheckboxText}
-            textStyle={disablePreviewCheckboxTextStyle}
-            fillColor="gray"
-            onPress={(isChecked: boolean) => {
-              setDisabledCheckbox(isChecked);
-            }}
-          /> */}
           <TouchableHighlight onPress={handleSubmit} style={styles.button}>
             <Text style={styles.buttonText} disabled={disableButton}>
               Go to webpage to sign a document
             </Text>
           </TouchableHighlight>
         </>
-      ) : null}
-      {renderWebView ? (
-        <WebViewComponent
-          disablePreview={disabledCheckbox}
-          theme={dropdownValue}
-          embedUrl={embedUrl}
-        />
-      ) : null}
     </SafeAreaView>
   );
 };
