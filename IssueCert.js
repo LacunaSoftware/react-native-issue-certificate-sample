@@ -118,7 +118,7 @@ const IssueCert: () => Node = () => {
           />
           <TouchableHighlight onPress={handleSubmit} style={styles.button}>
             <Text style={styles.buttonText} disabled={disableButton}>
-              Go to webpage to sign a document
+              Sign a document
             </Text>
           </TouchableHighlight>
         </>
