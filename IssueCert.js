@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Text,
   Linking,
+  Button,
   View
 } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -53,7 +54,7 @@ const IssueCert: () => Node = () => {
 
   var [disableButton, setDisableButton] = useState(false);
   const [items, setItems] = useState(itemOptions);
-  const [dropdownValue, setDropdownValue] = useState('');
+  var [dropdownValue, setDropdownValue] = useState('');
   const [open, setOpen] = useState(false);
   const [disabledCheckbox, setDisabledCheckbox] = useState(false);
   const [renderWebView, setRenderWebView] = useState(false);
@@ -124,11 +125,19 @@ const IssueCert: () => Node = () => {
         </>
       ) : null}
       {renderWebView ? (
+        <>
         <WebViewComponent
           disablePreview={disabledCheckbox}
           theme={dropdownValue}
           embedUrl={embedUrl}
         />
+        <View style={styles.buttonLayout}>
+            <Button title="Go back to main screen"
+            onPress={
+              ()=> {setRenderWebView(false);
+            }}/>
+        </View>
+        </>
       ) : null}
     </SafeAreaView>
   );
@@ -167,6 +176,9 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     textAlign: 'center',
     marginBottom: 20,
+  },
+  buttonLayout: {
+    marginBottom: 10,
   },
 });
 export default IssueCert;
