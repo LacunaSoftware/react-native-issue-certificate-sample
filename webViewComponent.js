@@ -24,6 +24,7 @@ export default class WebViewComponent extends Component {
           ref={ref => (this.webview = ref)}
           source={{uri: this.embedUrl}}
           injectedJavaScriptBeforeContentLoaded={this.error}
+          geolocationEnabled={true}
         />
       </View>
     );
