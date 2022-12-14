@@ -61,8 +61,8 @@ const IssueCert: () => Node = () => {
   var [embedUrl, setEmbedUrl] = useState('');
 
   const handleSubmit = () => {
-    // console.log('Disabled? ' + disabledCheckbox);
-    // console.log('Theme: ' + dropdownValue);
+    console.log('Disabled? ' + disabledCheckbox);
+    console.log('Theme: ' + dropdownValue);
     setDisableButton(true);
     sign();
   };
@@ -113,9 +113,9 @@ const IssueCert: () => Node = () => {
             text={disablePreviewCheckboxText}
             textStyle={disablePreviewCheckboxTextStyle}
             fillColor="gray"
-            onPress={(isChecked: boolean) => {
-              setDisabledCheckbox(isChecked);
-            }}
+            isChecked={disabledCheckbox}
+            disableBuiltInState
+            onPress={() => setDisabledCheckbox(!disabledCheckbox)}
           />
           <TouchableHighlight onPress={handleSubmit} style={styles.button}>
             <Text style={styles.buttonText} disabled={disableButton}>
